@@ -13,13 +13,19 @@ from ..classes.courses import Course
 from ..classes.upload import upload_assignment
 from ..classes.member import Member
 
-#import uvicorn
+# import uvicorn
 
 app = FastAPI()
 
+
+origins = [
+    "http://localhost:3000",
+    "https://unihub.salkaro.com",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "http://localhost:3000"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -386,5 +392,5 @@ def upload_assignment_files(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-#if __name__ == "__main__":
-    #uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+# if __name__ == "__main__":
+# uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
