@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 import bs4
 from pprint import pprint
 
-from gradescopeapi.classes.courses import Course
-from gradescopeapi.classes.member import Member
+from ...classes.courses import Course
+from ...classes.member import Member
 
 
 def get_courses_info(

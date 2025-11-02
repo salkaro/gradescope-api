@@ -2,19 +2,19 @@ import time
 
 from bs4 import BeautifulSoup
 
-from gradescopeapi import DEFAULT_GRADESCOPE_BASE_URL
-from gradescopeapi.classes._helpers._assignment_helpers import (
+from ..constants import DEFAULT_GRADESCOPE_BASE_URL
+from ..classes._helpers._assignment_helpers import (
     check_page_auth,
     get_assignments_instructor_view,
     get_assignments_student_view,
     get_submission_files,
 )
-from gradescopeapi.classes._helpers._course_helpers import (
+from ..classes._helpers._course_helpers import (
     get_course_members,
     get_courses_info,
 )
-from gradescopeapi.classes.assignments import Assignment
-from gradescopeapi.classes.member import Member
+from ..classes.assignments import Assignment
+from ..classes.member import Member
 
 
 class Account:

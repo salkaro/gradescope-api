@@ -3,8 +3,8 @@ import json
 import dateutil.parser
 import requests
 
-from gradescopeapi import DEFAULT_GRADESCOPE_BASE_URL
-from gradescopeapi.classes.assignments import Assignment
+from ...constants import DEFAULT_GRADESCOPE_BASE_URL
+from ...classes.assignments import Assignment
 
 
 def check_page_auth(session, endpoint):

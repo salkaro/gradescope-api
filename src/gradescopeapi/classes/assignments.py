@@ -7,7 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-from gradescopeapi import DEFAULT_GRADESCOPE_BASE_URL
+from ..constants import DEFAULT_GRADESCOPE_BASE_URL
 
 
 @dataclass
