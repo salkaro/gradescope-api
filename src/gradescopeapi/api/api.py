@@ -11,6 +11,8 @@ from gradescopeapi.classes.extensions import get_extensions, update_student_exte
 from gradescopeapi.classes.member import Member
 from gradescopeapi.classes.upload import upload_assignment
 
+import uvicorn
+
 app = FastAPI()
 
 # Create instance of GSConnection, to be used where needed
@@ -59,7 +61,7 @@ account = None
 
 @app.get("/")
 def root():
-    return {"message": "Hello World"}
+    return {"message": "Welcome to gradescope api"}
 
 
 @app.post("/login", name="login")
@@ -371,3 +373,7 @@ def upload_assignment_files(
             raise HTTPException(status_code=400, detail="Upload unsuccessful")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)

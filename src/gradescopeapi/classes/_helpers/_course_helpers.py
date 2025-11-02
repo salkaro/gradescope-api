@@ -2,6 +2,7 @@ import json
 
 from bs4 import BeautifulSoup
 import bs4
+from pprint import pprint
 
 from gradescopeapi.classes.courses import Course
 from gradescopeapi.classes.member import Member
@@ -38,32 +39,31 @@ def get_courses_info(
     # initalize dictionary to store all courses
     all_courses = {}
 
-    # find heading for defined user_type's courses
-    courses = soup.find("h1", class_="pageHeading", string=user_type)
-
-    # if no courses found, return empty dictionary
-    if courses is None:
-        return all_courses, False
-
     # use button to check if user is an instructor or not
-    button = courses.find_next("button")
-    if button.text == " Create a new course":  # intentional space before Create
+    button = soup.find_next("button")
+    if button and button.text == " Create a new course":  # intentional space before Create
         is_instructor = True
     else:
         is_instructor = False
 
     # find next div with class courseList
-    course_list = courses.find_next("div", class_="courseList")
+    course_list = soup.find("div", class_="courseList")
+
+    if course_list is None:
+        return None, is_instructor
+
+    pprint(course_list)
 
     for term in course_list.find_all("div", class_="courseList--term"):
         # find first "a" -> course
-        course = term.find_next("a")
+        course = course_list.find_next("a")
         while course is not None:
             # fetch course id and create new dictionary for each course
             course_id = course["href"].split("/")[-1]
 
             # fetch short name
             course_name = course.find("h3", class_="courseBox--shortname")
+            pprint(course_name)
             short_name = course_name.text
 
             # fetch full name
