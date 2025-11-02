@@ -2,21 +2,16 @@ from datetime import datetime
 
 from fastapi import Depends, FastAPI, HTTPException, status
 
-import sys
-import os
+from .._config.config import FileUploadModel, LoginRequestModel
+from ..classes.account import Account
+from ..classes.assignments import Assignment, update_assignment_date
+from ..classes.connection import GSConnection
+from ..classes.courses import Course
+from ..classes.extensions import get_extensions, update_student_extension
+from ..classes.member import Member
+from ..classes.upload import upload_assignment
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
-
-from gradescopeapi._config.config import FileUploadModel, LoginRequestModel
-from gradescopeapi.classes.account import Account
-from gradescopeapi.classes.assignments import Assignment, update_assignment_date
-from gradescopeapi.classes.connection import GSConnection
-from gradescopeapi.classes.courses import Course
-from gradescopeapi.classes.extensions import get_extensions, update_student_extension
-from gradescopeapi.classes.member import Member
-from gradescopeapi.classes.upload import upload_assignment
-
-import uvicorn
+#import uvicorn
 
 app = FastAPI()
 
@@ -380,5 +375,5 @@ def upload_assignment_files(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+#if __name__ == "__main__":
+    #uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
