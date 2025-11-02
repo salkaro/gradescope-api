@@ -2,6 +2,11 @@ from datetime import datetime
 
 from fastapi import Depends, FastAPI, HTTPException, status
 
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
+
 from gradescopeapi._config.config import FileUploadModel, LoginRequestModel
 from gradescopeapi.classes.account import Account
 from gradescopeapi.classes.assignments import Assignment, update_assignment_date
