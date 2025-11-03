@@ -1,17 +1,11 @@
-from datetime import datetime
-
 from fastapi import Depends, FastAPI, HTTPException, status, Body
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from .._config.config import FileUploadModel, LoginRequestModel
+from .._config.config import LoginRequestModel
 from ..classes.account import Account
 from ..classes.connection import GSConnection
-from ..classes.assignments import Assignment, update_assignment_date
-from ..classes.extensions import get_extensions, update_student_extension
 from ..classes.courses import Course
-from ..classes.upload import upload_assignment
-from ..classes.member import Member
 
 # import uvicorn
 
