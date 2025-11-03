@@ -6,20 +6,35 @@ from ...constants import DEFAULT_GRADESCOPE_BASE_URL
 
 def get_auth_token_init_gradescope_session(
     session: requests.Session,
-    gradescope_base_url: str = DEFAULT_GRADESCOPE_BASE_URL,
-) -> str:
+    gradescope_base_url: str = "https://www.gradescope.com",
+) -> str | None:
     """
-    Go to homepage to parse hidden authenticity token and to set initial "_gradescope_session" cookie
+    Go to homepage to parse hidden authenticity token and set initial "_gradescope_session" cookie.
     """
-    # go to homepage and set initial "_gradescope_session" cookie
-    homepage_resp = session.get(gradescope_base_url)
-    homepage_soup = BeautifulSoup(homepage_resp.text, "html.parser")
+    try:
+        homepage_resp = session.get(gradescope_base_url, timeout=10)
+    except requests.RequestException as e:
+        raise RuntimeError(f"Failed to reach Gradescope homepage: {e}")
 
-    # Find the authenticity token using CSS selectors
-    auth_token = homepage_soup.select_one(
+    # Ensure we got a valid response
+    if homepage_resp is None or homepage_resp.status_code != 200:
+        raise RuntimeError(
+            f"Unexpected response from Gradescope (status {getattr(homepage_resp, 'status_code', 'N/A')})"
+        )
+
+    # Create BeautifulSoup safely
+    homepage_soup = BeautifulSoup(homepage_resp.text or "", "html.parser")
+    if homepage_soup is None or homepage_soup.text.strip() == "":
+        raise RuntimeError("Received empty or invalid HTML from Gradescope homepage")
+
+    # Try to find the authenticity token
+    auth_input = homepage_soup.select_one(
         'form[action="/login"] input[name="authenticity_token"]'
-    )["value"]
-    return auth_token
+    )
+    if auth_input is None:
+        return None
+
+    return auth_input["value"]
 
 
 def login_set_session_cookies(

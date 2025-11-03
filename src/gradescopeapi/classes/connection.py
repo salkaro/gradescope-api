@@ -16,12 +16,18 @@ class GSConnection:
         self.account = None
 
     def login(self, email, password):
-        # go to homepage to parse hidden authenticity token and to set initial "_gradescope_session" cookie
+        # Go to homepage to parse hidden authenticity token and to set initial "_gradescope_session" cookie
         auth_token = get_auth_token_init_gradescope_session(
             self.session, self.gradescope_base_url
         )
 
-        # login and set cookies in session. Result bool on whether login was success
+        # User is already logged in
+        if auth_token is None:
+            self.logged_in = True
+            self.account = Account(self.session, self.gradescope_base_url)
+            return 
+
+        # Login and set cookies in session. Result bool on whether login was success
         login_success = login_set_session_cookies(
             self.session, email, password, auth_token, self.gradescope_base_url
         )
