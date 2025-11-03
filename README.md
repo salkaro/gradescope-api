@@ -6,22 +6,44 @@
 
 This *unofficial* project serves as a library for programmatically interacting with [Gradescope](https://www.gradescope.com/). The primary purpose of this project is to provide students and instructors tools for interacting with Gradescope without having to use the web interface.
 
-For example:
+### Use Cases
 
-- Students using this project could automatically query information about their courses and assignments to notify them of upcoming deadlines or new assignments.
-- Instructors could use this project bulk edit assignment due dates or sync student extensions with an external system.
+- **Students:** Automatically query information about courses and assignments to notify them of upcoming deadlines or new assignments.
+- **Instructors:** Bulk edit assignment due dates, manage student extensions, or sync data with external systems.
+- **Developers:** Build integrations and tools that leverage Gradescope data (e.g., academic dashboards, assignment trackers, etc.)
+
+### Technology Stack
+
+- **Python 3.10+**
+- **FastAPI 0.120.4** - REST API server
+- **Requests 2.32.5** - HTTP client for Gradescope communication
+- **BeautifulSoup4 4.14.2** - Web scraping and HTML parsing
+- **Pydantic 2.12.3** - Data validation and serialization
+- **Uvicorn 0.38.0** - ASGI server
+- **Vercel** - Serverless deployment platform
 
 ## Features
 
-Implemented Features Include:
+### Core Functionality
 
-- Get all courses for a user
-- Get a list of all assignments for a course
-- Get all extensions for an assignment in a course
-- Add/remove/modify extensions for an assignment in a course
-- Add/remove/modify dates for an assignment in a course
-- Upload submissions to assignments
-- API server to interact with library without Python
+- **Course Management**
+  - Get all courses for a user (instructor and student roles)
+  - Retrieve course roster/members with details
+
+- **Assignment Operations**
+  - Get a list of all assignments for a course
+  - Add/remove/modify dates for an assignment (release, due, late submission)
+  - Get assignment submissions and graders
+  - Upload submissions to assignments
+
+- **Extension Management**
+  - Get all extensions for an assignment in a course
+  - Add/remove/modify student extensions for assignments
+
+- **API Server**
+  - FastAPI REST server to interact with library without Python
+  - Auto-generated API documentation (Swagger UI)
+  - CORS support for cross-origin requests
 
 ## Demo
 
@@ -43,7 +65,7 @@ For additional methods of installation, refer to the [install guide](docs/INSTAL
 
 The project is designed to be simple and easy to use. As such, we have provided users with two different options for using this project.
 
-### Option 1: FastAPI
+### Option 1: FastAPI Server
 
 If you do not want to use Python, you can host the API using the integrated FastAPI server. This way, you can interact with Gradescope using different languages by sending HTTP requests to the API server.
 
@@ -54,6 +76,19 @@ To run the API server locally on your machine, open the project repository on yo
 1. Navigate to the `src.gradescopeapi.api` directory
 1. Run the command: `uvicorn api:app --reload` to run the server locally
 1. In a web browser, navigate to `localhost:8000/docs`, to see the auto-generated FastAPI docs
+
+**Available API Endpoints**
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/` | GET | Root/welcome message |
+| `/login` | POST | Authenticate user with email and password |
+| `/courses` | POST | Fetch all courses for authenticated user |
+| `/assignments` | POST | Fetch assignments for a specific course |
+
+**Deployment**
+
+The API is configured for deployment on Vercel as a serverless function. See [vercel.json](vercel.json) for configuration details.
 
 ### Option 2: Python
 
